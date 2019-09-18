@@ -555,7 +555,9 @@ var hui = (function(selector){
 		_hui.ToastTimer = setTimeout(function(){toast.remove();}, 2500);
 	};
 	/* dialog */
+	var mask_count = 0;
 	_hui.maskShow = function(){
+		mask_count += 1;
 		_hui.mask = document.getElementById('hui-mask');
 		if(!_hui.mask){
 			_hui.mask = document.createElement('div');
@@ -563,7 +565,15 @@ var hui = (function(selector){
 			document.body.appendChild(_hui.mask);
 		}
 	};
-	_hui.maskHide = function(){_hui.mask=document.getElementById('hui-mask');if(_hui.mask){document.body.removeChild(_hui.mask);}}
+	_hui.maskHide = function(){
+		mask_count -= 1;
+		if (mask_count === 0){
+			_hui.mask = document.getElementById('hui-mask');
+			if(_hui.mask){
+				document.body.removeChild(_hui.mask);
+			}
+		}
+	};
 	_hui.maskTap  = function(callBack){_hui.mask.addEventListener('click', callBack);}
 	_hui.dialogBase  = function(){
 		hui.dialogDom = document.getElementById('hui-dialog');
